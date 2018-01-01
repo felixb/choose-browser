@@ -1,0 +1,10 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="remember_by_default"
+        android:summaryOff="@string/pref_remember_selection_by_default_off"
+        android:summaryOn="@string/pref_remember_selection_by_default_on"
+        android:title="@string/pref_remember_selection_by_default" />
+
+</PreferenceScreen>

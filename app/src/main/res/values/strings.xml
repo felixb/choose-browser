@@ -4,4 +4,9 @@
     <string name="chooser_item_logo">Logo of displayed app</string>
     <string name="remember_preference">Remember preference</string>
     <string name="error_unsupported_link">Link is currently not supported</string>
+
+    <string name="settings">Settings</string>
+    <string name="pref_remember_selection_by_default">Remember preference by default</string>
+    <string name="pref_remember_selection_by_default_on">Save selected app for easy reuse by default</string>
+    <string name="pref_remember_selection_by_default_off">Saving selection needs prior activation</string>
 </resources>

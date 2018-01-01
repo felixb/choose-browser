@@ -2,10 +2,12 @@ package de.ub0r.android.choosebrowser;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,19 +47,23 @@ public class ChooserActivity extends AppCompatActivity {
                 showChooser(uri);
         } else {
             Toast.makeText(this, R.string.error_unsupported_link, Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
     private void showChooser(final Uri uri) {
         Log.d(TAG, "showChooser for uri ", uri);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setSubtitle(uri.toString());
 
         final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         final PackageManager pm = getPackageManager();
         final List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         mRemeberPreference = findViewById(R.id.remember_preference);
+        mRemeberPreference.setChecked(prefs.getBoolean(SettingsActivity.PREF_NAME_REMEMBER_BY_DEFAULT, SettingsActivity.PREF_DEFAULT_REMEMBER_BY_DEFAULT));
         mRemeberPreference.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
