@@ -1,5 +1,6 @@
 package de.ub0r.android.choosebrowser;
 
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,9 +46,17 @@ public class ChooserActivity extends AppCompatActivity {
         if (uri != null) {
             final ComponentName component = getPreferredApp(uri);
             if (component != null) {
-                startActivity(uri, component);
-            } else
+                try {
+                    startActivity(uri, component);
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "error starting app: ", component, e);
+                    Toast.makeText(this, R.string.error_app_not_found, Toast.LENGTH_LONG).show();
+                    removePreferredApp(uri);
+                    showChooser(uri);
+                }
+            } else {
                 showChooser(uri);
+            }
         } else {
             Toast.makeText(this, R.string.error_unsupported_link, Toast.LENGTH_LONG).show();
             finish();
@@ -124,5 +133,9 @@ public class ChooserActivity extends AppCompatActivity {
 
     private ComponentName getPreferredApp(final Uri uri) {
         return mStore.get(uriToKey(uri));
+    }
+
+    private void removePreferredApp(final Uri uri) {
+        mStore.remove(uriToKey(uri));
     }
 }
