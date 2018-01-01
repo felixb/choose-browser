@@ -2,5 +2,6 @@
     <string name="app_name">ChooseBrowser</string>
     <string name="chooser_title">Choose Browser</string>
     <string name="chooser_item_logo">Logo of displayed app</string>
+    <string name="remember_preference">Remember preference</string>
     <string name="error_unsupported_link">Link is currently not supported</string>
 </resources>

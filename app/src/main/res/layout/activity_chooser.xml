@@ -3,12 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/activity_margin"
     android:orientation="vertical"
     tools:context="de.ub0r.android.choosebrowser.ChooserActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dip"
+        android:layout_weight="1" />
+
+    <CheckedTextView
+        android:id="@+id/remember_preference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:text="@string/remember_preference"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="activity_margin">8dp</dimen>
     <dimen name="item_chooser_height">48dp</dimen>
     <dimen name="item_chooser_icon_padding">8dp</dimen>
 </resources>
