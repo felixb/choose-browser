@@ -1,7 +1,6 @@
 package de.ub0r.android.choosebrowser;
 
 import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -16,7 +15,7 @@ class IntentParser {
     private final static String PATTERN = "https?://[^\\s]*";
     private final Pattern mPattern = Pattern.compile(PATTERN);
 
-    Uri parseIntent(final Context context, final Intent intent) {
+    Uri parseIntent(final Intent intent) {
         final Uri data = intent.getData();
         Log.d(TAG, "parsing intent with action %s, data %s", intent.getAction(), data);
 
@@ -32,13 +31,13 @@ class IntentParser {
         }
 
         if (intent.getClipData() != null) {
-            return parseClipData(context, intent.getClipData());
+            return parseClipData(intent.getClipData());
         }
 
         return null;
     }
 
-    private Uri parseClipData(@NonNull final Context context, @NonNull final ClipData clipData) {
+    private Uri parseClipData(@NonNull final ClipData clipData) {
         if (clipData.getItemCount() == 0) {
             return null;
         }

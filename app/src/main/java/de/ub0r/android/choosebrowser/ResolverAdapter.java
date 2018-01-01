@@ -23,9 +23,9 @@ public class ResolverAdapter extends RecyclerView.Adapter<ResolverAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        View containerView;
-        TextView activityNameView;
-        ImageView iconView;
+        final View containerView;
+        final TextView activityNameView;
+        final ImageView iconView;
 
         ViewHolder(final View itemView) {
             super(itemView);
@@ -66,12 +66,10 @@ public class ResolverAdapter extends RecyclerView.Adapter<ResolverAdapter.ViewHo
 
     private final LayoutInflater mInflater;
     private final PackageManager mPackageManager;
-    private OnItemClickListener mListener;
-    private Context mContext;
-    private List<ContentHolder> mItems;
+    private final OnItemClickListener mListener;
+    private final List<ContentHolder> mItems;
 
     ResolverAdapter(final Context context, final OnItemClickListener listener, final List<ResolveInfo> items) {
-        mContext = context;
         mInflater = LayoutInflater.from(context);
         mPackageManager = context.getPackageManager();
         mListener = listener;

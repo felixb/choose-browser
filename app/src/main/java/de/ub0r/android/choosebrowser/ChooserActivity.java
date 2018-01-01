@@ -28,10 +28,10 @@ public class ChooserActivity extends AppCompatActivity {
     private static final String TAG = "ChooserActivity";
     private static final String PREF_STORE = "preference_store";
 
-    private IntentParser mParser = new IntentParser();
+    private final IntentParser mParser = new IntentParser();
     private PreferenceStore mStore;
 
-    private CheckedTextView mRemeberPreference;
+    private CheckedTextView mRememberPreference;
     private RecyclerView mList;
     private ResolverAdapter mAdapter;
 
@@ -42,7 +42,7 @@ public class ChooserActivity extends AppCompatActivity {
 
         mStore = new PreferenceStore(getSharedPreferences(PREF_STORE, MODE_PRIVATE));
 
-        final Uri uri = mParser.parseIntent(this, getIntent());
+        final Uri uri = mParser.parseIntent(getIntent());
         if (uri != null) {
             final ComponentName component = getPreferredApp(uri);
             if (component != null) {
@@ -92,12 +92,12 @@ public class ChooserActivity extends AppCompatActivity {
         final List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        mRemeberPreference = findViewById(R.id.remember_preference);
-        mRemeberPreference.setChecked(prefs.getBoolean(SettingsActivity.PREF_NAME_REMEMBER_BY_DEFAULT, SettingsActivity.PREF_DEFAULT_REMEMBER_BY_DEFAULT));
-        mRemeberPreference.setOnClickListener(new View.OnClickListener() {
+        mRememberPreference = findViewById(R.id.remember_preference);
+        mRememberPreference.setChecked(prefs.getBoolean(SettingsActivity.PREF_NAME_REMEMBER_BY_DEFAULT, SettingsActivity.PREF_DEFAULT_REMEMBER_BY_DEFAULT));
+        mRememberPreference.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                mRemeberPreference.toggle();
+                mRememberPreference.toggle();
             }
         });
 
@@ -126,7 +126,7 @@ public class ChooserActivity extends AppCompatActivity {
     }
 
     private void optionallyStorePreferredApp(final Uri uri, final ComponentName component) {
-        if (mRemeberPreference.isChecked()) {
+        if (mRememberPreference.isChecked()) {
             mStore.put(uriToKey(uri), component);
         }
     }

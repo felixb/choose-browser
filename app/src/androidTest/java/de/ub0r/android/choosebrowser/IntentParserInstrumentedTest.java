@@ -26,14 +26,14 @@ public class IntentParserInstrumentedTest {
     @Test
     public void parseIntentWithData() throws Exception {
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(EXPECTED_URL));
-        assertEquals(EXPECTED_URL, mParser.parseIntent(mActivityRule.getActivity(), intent).toString());
+        assertEquals(EXPECTED_URL, mParser.parseIntent(intent).toString());
     }
 
     @Test
     public void parseIntentWithExtraText() throws Exception {
         final Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_TEXT, "some text with http://example.com/url");
-        assertEquals(EXPECTED_URL, mParser.parseIntent(mActivityRule.getActivity(), intent).toString());
+        assertEquals(EXPECTED_URL, mParser.parseIntent(intent).toString());
     }
 
     @Test
@@ -41,7 +41,7 @@ public class IntentParserInstrumentedTest {
         ClipData clipData = ClipData.newPlainText("some-label", "some text with http://example.com/url");
         Intent intent = new Intent();
         intent.setClipData(clipData);
-        assertEquals(EXPECTED_URL, mParser.parseIntent(mActivityRule.getActivity(), intent).toString());
+        assertEquals(EXPECTED_URL, mParser.parseIntent(intent).toString());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class IntentParserInstrumentedTest {
         ClipData clipData = ClipData.newPlainText("some-label", "some text");
         Intent intent = new Intent();
         intent.setClipData(clipData);
-        assertNull(mParser.parseIntent(mActivityRule.getActivity(), intent));
+        assertNull(mParser.parseIntent(intent));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class IntentParserInstrumentedTest {
         ClipData clipData = ClipData.newRawUri("some-label", Uri.parse(EXPECTED_URL));
         Intent intent = new Intent();
         intent.setClipData(clipData);
-        assertEquals(EXPECTED_URL, mParser.parseIntent(mActivityRule.getActivity(), intent).toString());
+        assertEquals(EXPECTED_URL, mParser.parseIntent(intent).toString());
     }
 
     @Test
@@ -65,6 +65,6 @@ public class IntentParserInstrumentedTest {
         ClipData clipData = ClipData.newRawUri("some-label", Uri.parse("content://some.provider/foo"));
         Intent intent = new Intent();
         intent.setClipData(clipData);
-        assertNull(mParser.parseIntent(mActivityRule.getActivity(), intent));
+        assertNull(mParser.parseIntent(intent));
     }
 }
