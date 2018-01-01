@@ -2,7 +2,6 @@ package de.ub0r.android.choosebrowser;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -17,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResolverAdapter extends RecyclerView.Adapter<ResolverAdapter.ViewHolder> {
+
+    interface OnItemClickListener {
+        void onItemClick(final ComponentName component);
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -63,15 +66,15 @@ public class ResolverAdapter extends RecyclerView.Adapter<ResolverAdapter.ViewHo
 
     private final LayoutInflater mInflater;
     private final PackageManager mPackageManager;
+    private OnItemClickListener mListener;
     private Context mContext;
-    private Intent mIntent;
     private List<ContentHolder> mItems;
 
-    ResolverAdapter(final Context context, final Intent intent, final List<ResolveInfo> items) {
+    ResolverAdapter(final Context context, final OnItemClickListener listener, final List<ResolveInfo> items) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mPackageManager = context.getPackageManager();
-        mIntent = intent;
+        mListener = listener;
         mItems = new ArrayList<>();
         final String myPackageName = context.getPackageName();
         for (ResolveInfo resolveInfo : items) {
@@ -93,14 +96,14 @@ public class ResolverAdapter extends RecyclerView.Adapter<ResolverAdapter.ViewHo
         final ContentHolder content = mItems.get(position);
         holder.activityNameView.setText(content.getLabel(mPackageManager));
         holder.iconView.setImageDrawable(content.getIcon(mPackageManager));
-        holder.containerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                final Intent intent = new Intent(mIntent);
-                intent.setComponent(content.getComponent());
-                mContext.startActivity(intent);
-            }
-        });
+        if (mListener != null) {
+            holder.containerView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    mListener.onItemClick(content.getComponent());
+                }
+            });
+        }
     }
 
     @Override

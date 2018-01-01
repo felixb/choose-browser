@@ -1,5 +1,6 @@
 package de.ub0r.android.choosebrowser;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -42,7 +43,15 @@ public class ChooserActivity extends AppCompatActivity {
         final List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
 
         mList = findViewById(android.R.id.list);
-        mAdapter = new ResolverAdapter(this, intent, infos);
+        mAdapter = new ResolverAdapter(this, new ResolverAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(final ComponentName component) {
+                intent.setComponent(component);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        }, infos);
         mList.setAdapter(mAdapter);
         mList.setLayoutManager(new LinearLayoutManager(this));
     }
