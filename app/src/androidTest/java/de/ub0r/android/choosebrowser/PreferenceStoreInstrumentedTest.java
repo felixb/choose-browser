@@ -7,7 +7,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +24,10 @@ public class PreferenceStoreInstrumentedTest {
             new ActivityTestRule<>(ChooserActivity.class);
 
     private SharedPreferences getPreferences() {
-        return mActivityRule.getActivity().getSharedPreferences("test", Context.MODE_PRIVATE);
+        final SharedPreferences preferences = mActivityRule.getActivity()
+                .getSharedPreferences("test", Context.MODE_PRIVATE);
+        preferences.edit().clear().apply();
+        return preferences;
     }
 
     @Test
@@ -54,13 +56,23 @@ public class PreferenceStoreInstrumentedTest {
         assertNull(store.get(key));
     }
 
-    @Before
-    public void tearUp() {
-        getPreferences().edit().clear().apply();
+    @Test
+    public void listKeys() throws Exception {
+        final SharedPreferences preferences = getPreferences();
+        final PreferenceStore store = new PreferenceStore(preferences);
+        final ComponentName componentName = new ComponentName("pkg", "cls");
+
+        assertEquals(0, store.list().size());
+
+        final String key = "some-other-key";
+        store.put(key, componentName);
+
+        assertEquals(1, store.list().size());
+        assertTrue(store.list().contains(key));
     }
 
     @After
     public void tearDown() {
-        getPreferences().edit().clear().apply();
+        getPreferences();
     }
 }

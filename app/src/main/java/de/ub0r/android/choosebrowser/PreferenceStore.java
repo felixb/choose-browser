@@ -1,10 +1,19 @@
 package de.ub0r.android.choosebrowser;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Set;
+
 class PreferenceStore {
+    private static final String PREF_STORE = "preference_store";
+
     private final SharedPreferences mBackend;
+
+    PreferenceStore(final Context context) {
+        this(context.getSharedPreferences(PREF_STORE, Context.MODE_PRIVATE));
+    }
 
     PreferenceStore(final SharedPreferences backend) {
         mBackend = backend;
@@ -21,6 +30,10 @@ class PreferenceStore {
 
     void put(final String key, final ComponentName component) {
         mBackend.edit().putString(key, component.flattenToShortString()).apply();
+    }
+
+    Set<String> list() {
+        return mBackend.getAll().keySet();
     }
 
     void remove(final String key) {

@@ -7,4 +7,11 @@
         android:summaryOn="@string/pref_remember_selection_by_default_on"
         android:title="@string/pref_remember_selection_by_default" />
 
+    <PreferenceScreen
+        android:summary="@string/manage_preferred_apps"
+        android:title="@string/preferred_apps">
+        <intent
+            android:targetClass="de.ub0r.android.choosebrowser.PreferredAppsActivity"
+            android:targetPackage="de.ub0r.android.choosebrowser" />
+    </PreferenceScreen>
 </PreferenceScreen>

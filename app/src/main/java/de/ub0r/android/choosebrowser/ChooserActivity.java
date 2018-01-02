@@ -26,7 +26,6 @@ import de.ub0r.android.logg0r.Log;
 public class ChooserActivity extends AppCompatActivity {
 
     private static final String TAG = "ChooserActivity";
-    private static final String PREF_STORE = "preference_store";
 
     private final IntentParser mParser = new IntentParser();
     private PreferenceStore mStore;
@@ -40,7 +39,7 @@ public class ChooserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
 
-        mStore = new PreferenceStore(getSharedPreferences(PREF_STORE, MODE_PRIVATE));
+        mStore = new PreferenceStore(this);
 
         final Uri uri = mParser.parseIntent(getIntent());
         if (uri != null) {
@@ -75,6 +74,9 @@ public class ChooserActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.menu_preferred_apps:
+                startActivity(new Intent(this, PreferredAppsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

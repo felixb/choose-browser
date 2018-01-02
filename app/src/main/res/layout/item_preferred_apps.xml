@@ -15,12 +15,24 @@
         android:padding="@dimen/item_icon_padding" />
 
     <TextView
+        android:id="@+id/key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/item_margin_vertical"
+        android:layout_toEndOf="@id/activity_icon"
+        android:clickable="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <TextView
         android:id="@+id/activity_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/item_margin_vertical"
         android:layout_toEndOf="@id/activity_icon"
         android:clickable="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 </RelativeLayout>
