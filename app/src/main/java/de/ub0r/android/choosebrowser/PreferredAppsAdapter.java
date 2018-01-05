@@ -20,23 +20,19 @@ public class PreferredAppsAdapter extends RecyclerView.Adapter<PreferredAppsAdap
 
     private static final String TAG = "PreferredAppsAdapter";
 
-    interface OnItemClickListener {
-        void onItemClick(final ComponentName component);
-    }
-
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        final View containerView;
         final TextView keyView;
         final TextView activityNameView;
         final ImageView iconView;
+        final View deleteActionView;
 
         ViewHolder(final View itemView) {
             super(itemView);
             keyView = itemView.findViewById(R.id.key);
             activityNameView = itemView.findViewById(R.id.activity_name);
             iconView = itemView.findViewById(R.id.activity_icon);
-            containerView = itemView;
+            deleteActionView = itemView.findViewById(R.id.action_delete);
         }
 
     }
@@ -86,14 +82,12 @@ public class PreferredAppsAdapter extends RecyclerView.Adapter<PreferredAppsAdap
 
     private final LayoutInflater mInflater;
     private final PackageManager mPackageManager;
-    private final OnItemClickListener mListener;
     private PreferenceStore mStore;
     private final List<ContentHolder> mItems;
 
-    PreferredAppsAdapter(final Context context, final OnItemClickListener listener, final PreferenceStore store) {
+    PreferredAppsAdapter(final Context context, final PreferenceStore store) {
         mInflater = LayoutInflater.from(context);
         mPackageManager = context.getPackageManager();
-        mListener = listener;
         mStore = store;
         mItems = new ArrayList<>();
         for (final String key : mStore.list()) {
@@ -114,18 +108,23 @@ public class PreferredAppsAdapter extends RecyclerView.Adapter<PreferredAppsAdap
         holder.keyView.setText(content.getKey());
         holder.activityNameView.setText(content.getLabel(mPackageManager));
         holder.iconView.setImageDrawable(content.getIcon(mPackageManager));
-        if (mListener != null) {
-            holder.containerView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    mListener.onItemClick(content.getComponent());
-                }
-            });
-        }
+        holder.deleteActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                deleteItem(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    private void deleteItem(final int position) {
+        final ContentHolder content = mItems.get(position);
+        mStore.remove(content.getKey());
+        mItems.remove(position);
+        notifyItemRemoved(position);
     }
 }

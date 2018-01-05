@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_height"
-    android:background="?android:attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_height="@dimen/item_height">
 
     <ImageView
         android:id="@+id/activity_icon"
@@ -14,6 +11,18 @@
         android:contentDescription="@string/chooser_item_logo"
         android:padding="@dimen/item_icon_padding" />
 
+    <ImageView
+        android:id="@+id/action_delete"
+        android:layout_width="@dimen/item_height"
+        android:layout_height="@dimen/item_height"
+        android:layout_alignParentEnd="true"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:contentDescription="@string/chooser_item_logo"
+        android:focusable="true"
+        android:padding="@dimen/item_icon_padding"
+        android:src="@drawable/ic_delete" />
+
     <TextView
         android:id="@+id/key"
         android:layout_width="match_parent"
@@ -21,6 +30,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/item_margin_vertical"
         android:layout_toEndOf="@id/activity_icon"
+        android:layout_toStartOf="@id/action_delete"
         android:clickable="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -31,6 +41,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/item_margin_vertical"
         android:layout_toEndOf="@id/activity_icon"
+        android:layout_toStartOf="@id/action_delete"
         android:clickable="false"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />

@@ -21,7 +21,7 @@ public class PreferredAppsActivity extends AppCompatActivity {
 
         mStore = new PreferenceStore(this);
         mList = findViewById(android.R.id.list);
-        mAdapter = new PreferredAppsAdapter(this, null, mStore);
+        mAdapter = new PreferredAppsAdapter(this, mStore);
         mList.setAdapter(mAdapter);
         mList.setLayoutManager(new LinearLayoutManager(this));
     }
