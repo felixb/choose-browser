@@ -28,18 +28,18 @@ public class ChooserActivity extends AppCompatActivity {
     private static final String TAG = "ChooserActivity";
 
     private final IntentParser mParser = new IntentParser();
-    private PreferenceStore mStore;
+    private PreferredAppsStore mStore;
 
     private CheckedTextView mRememberPreference;
     private RecyclerView mList;
-    private ResolverAdapter mAdapter;
+    private ChooserAdapter mAdapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
 
-        mStore = new PreferenceStore(this);
+        mStore = new PreferredAppsStore(this);
 
         final Uri uri = mParser.parseIntent(getIntent());
         if (uri != null) {
@@ -104,7 +104,7 @@ public class ChooserActivity extends AppCompatActivity {
         });
 
         mList = findViewById(android.R.id.list);
-        mAdapter = new ResolverAdapter(this, new ResolverAdapter.OnItemClickListener() {
+        mAdapter = new ChooserAdapter(this, new ChooserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final ComponentName component) {
                 optionallyStorePreferredApp(uri, component);

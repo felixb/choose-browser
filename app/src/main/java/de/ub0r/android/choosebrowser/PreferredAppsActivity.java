@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 public class PreferredAppsActivity extends AppCompatActivity {
 
-    private PreferenceStore mStore;
+    private PreferredAppsStore mStore;
     private RecyclerView mList;
     private PreferredAppsAdapter mAdapter;
 
@@ -19,7 +19,7 @@ public class PreferredAppsActivity extends AppCompatActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setSubtitle(R.string.preferred_apps);
 
-        mStore = new PreferenceStore(this);
+        mStore = new PreferredAppsStore(this);
         mList = findViewById(android.R.id.list);
         mAdapter = new PreferredAppsAdapter(this, mStore);
         mList.setAdapter(mAdapter);

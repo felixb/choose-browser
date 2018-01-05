@@ -6,16 +6,16 @@ import android.content.SharedPreferences;
 
 import java.util.Set;
 
-class PreferenceStore {
-    private static final String PREF_STORE = "preference_store";
+class PreferredAppsStore {
+    private static final String PREF_STORE = "preferred_apps_store";
 
     private final SharedPreferences mBackend;
 
-    PreferenceStore(final Context context) {
+    PreferredAppsStore(final Context context) {
         this(context.getSharedPreferences(PREF_STORE, Context.MODE_PRIVATE));
     }
 
-    PreferenceStore(final SharedPreferences backend) {
+    PreferredAppsStore(final SharedPreferences backend) {
         mBackend = backend;
     }
 

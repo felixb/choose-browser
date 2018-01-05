@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResolverAdapter extends RecyclerView.Adapter<ResolverAdapter.ViewHolder> {
+public class ChooserAdapter extends RecyclerView.Adapter<ChooserAdapter.ViewHolder> {
 
     interface OnItemClickListener {
         void onItemClick(final ComponentName component);
@@ -69,7 +69,7 @@ public class ResolverAdapter extends RecyclerView.Adapter<ResolverAdapter.ViewHo
     private final OnItemClickListener mListener;
     private final List<ContentHolder> mItems;
 
-    ResolverAdapter(final Context context, final OnItemClickListener listener, final List<ResolveInfo> items) {
+    ChooserAdapter(final Context context, final OnItemClickListener listener, final List<ResolveInfo> items) {
         mInflater = LayoutInflater.from(context);
         mPackageManager = context.getPackageManager();
         mListener = listener;

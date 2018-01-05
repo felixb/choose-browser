@@ -83,10 +83,10 @@ public class PreferredAppsAdapter extends RecyclerView.Adapter<PreferredAppsAdap
 
     private final LayoutInflater mInflater;
     private final PackageManager mPackageManager;
-    private PreferenceStore mStore;
+    private PreferredAppsStore mStore;
     private final List<ContentHolder> mItems;
 
-    PreferredAppsAdapter(final Context context, final PreferenceStore store) {
+    PreferredAppsAdapter(final Context context, final PreferredAppsStore store) {
         mInflater = LayoutInflater.from(context);
         mPackageManager = context.getPackageManager();
         mStore = store;

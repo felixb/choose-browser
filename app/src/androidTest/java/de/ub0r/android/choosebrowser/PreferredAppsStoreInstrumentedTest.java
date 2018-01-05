@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class PreferenceStoreInstrumentedTest {
+public class PreferredAppsStoreInstrumentedTest {
 
     @Rule
     public ActivityTestRule<ChooserActivity> mActivityRule =
@@ -33,7 +33,7 @@ public class PreferenceStoreInstrumentedTest {
     @Test
     public void isEmptyOnEmptyStore() throws Exception {
         final SharedPreferences preferences = getPreferences();
-        final PreferenceStore store = new PreferenceStore(preferences);
+        final PreferredAppsStore store = new PreferredAppsStore(preferences);
 
         final String key = "some-key";
         assertFalse(store.contains(key));
@@ -43,7 +43,7 @@ public class PreferenceStoreInstrumentedTest {
     @Test
     public void addPreferredAppAndRetrieve() throws Exception {
         final SharedPreferences preferences = getPreferences();
-        final PreferenceStore store = new PreferenceStore(preferences);
+        final PreferredAppsStore store = new PreferredAppsStore(preferences);
         final ComponentName componentName = new ComponentName("pkg", "cls");
 
         final String key = "some-other-key";
@@ -59,7 +59,7 @@ public class PreferenceStoreInstrumentedTest {
     @Test
     public void listKeys() throws Exception {
         final SharedPreferences preferences = getPreferences();
-        final PreferenceStore store = new PreferenceStore(preferences);
+        final PreferredAppsStore store = new PreferredAppsStore(preferences);
         final ComponentName componentName = new ComponentName("pkg", "cls");
 
         assertEquals(0, store.list().size());
