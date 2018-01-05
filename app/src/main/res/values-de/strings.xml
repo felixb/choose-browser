@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Browser wählen</string>
+
+    <string name="chooser_item_logo">Logo der App</string>
+    <string name="remember_preference">Auswahl speichern</string>
+    <string name="error_app_not_found">Fehler beim Starten der gespeicherten App</string>
+    <string name="error_unsupported_link">Link ist derzeit nicht unterstützt</string>
+
+    <string name="settings">Einstellungen</string>
+    <string name="pref_remember_selection_by_default">Apps standardmäßig merken</string>
+    <string name="pref_remember_selection_by_default_on">Die ausgewählte App wird automatisch gespeichert</string>
+    <string name="pref_remember_selection_by_default_off">Erst nach Aktivierung wird die ausgewählte App gespeichert</string>
+
+    <string name="preferred_apps">Gespeicherte Apps</string>
+    <string name="manage_preferred_apps">Gespeicherte Apps verwalten</string>
+</resources>
