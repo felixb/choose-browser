@@ -6,18 +6,40 @@ repositories {
 
 apply plugin: 'com.android.application'
 
+File releaseProps = new File("release.properties")
+
 android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "de.ub0r.android.choosebrowser"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 190000100
+        versionName "1.0-snapshot"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
+    signingConfigs {
         release {
+            if (releaseProps.exists()) {
+                Properties props = new Properties()
+                props.load(new FileInputStream(releaseProps))
+
+                storeFile file("../release.ks")
+                storePassword props.getProperty("releaseKeystorePassword")
+                keyAlias "jarsign"
+                keyPassword props.getProperty("releaseKeyPassword")
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            versionNameSuffix "-debug"
+        }
+
+        release {
+            if (releaseProps.exists()) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
