@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.ub0r.android.logg0r.Log;
@@ -90,7 +91,9 @@ public class PreferredAppsAdapter extends RecyclerView.Adapter<PreferredAppsAdap
         mPackageManager = context.getPackageManager();
         mStore = store;
         mItems = new ArrayList<>();
-        for (final String key : mStore.list()) {
+        final ArrayList<String> keys = new ArrayList<>(mStore.list());
+        Collections.sort(keys);
+        for (final String key : keys) {
             mItems.add(new ContentHolder(key, mStore.get(key)));
         }
     }
