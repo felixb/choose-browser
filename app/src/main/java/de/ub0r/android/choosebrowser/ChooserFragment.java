@@ -173,7 +173,7 @@ public class ChooserFragment extends AppCompatDialogFragment {
     private void optionallyStorePreferredApp(final Uri uri, final ComponentName component) {
         if (mRememberPreference.isChecked()) {
             final PreferredAppsStore store = new PreferredAppsStore(getContext());
-            store.put(store.uriToKey(uri), component);
+            store.put(uri, component);
         }
     }
 }

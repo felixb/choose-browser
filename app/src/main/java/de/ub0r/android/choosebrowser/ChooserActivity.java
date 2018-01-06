@@ -77,10 +77,10 @@ public class ChooserActivity extends AppCompatActivity {
     }
 
     private ComponentName getPreferredApp(@NonNull final Uri uri) {
-        return mStore.get(mStore.uriToKey(uri));
+        return mStore.get(uri);
     }
 
     private void removePreferredApp(@NonNull final Uri uri) {
-        mStore.remove(mStore.uriToKey(uri));
+        mStore.remove(uri);
     }
 }
