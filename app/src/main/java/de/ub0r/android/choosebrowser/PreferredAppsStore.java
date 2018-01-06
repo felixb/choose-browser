@@ -3,6 +3,7 @@ package de.ub0r.android.choosebrowser;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import java.util.Set;
 
@@ -17,6 +18,11 @@ class PreferredAppsStore {
 
     PreferredAppsStore(final SharedPreferences backend) {
         mBackend = backend;
+    }
+
+
+    String uriToKey(final Uri uri) {
+        return uri.getHost();
     }
 
     boolean contains(final String key) {
