@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
-public class PreferredAppsActivity extends AppCompatActivity {
+public class PreferredAppsActivity extends AppCompatActivity implements PreferredAppsAdapter.DeleteItemListener {
 
     private PreferredAppsStore mStore;
     private RecyclerView mList;
+    private View mEmptyListView;
     private PreferredAppsAdapter mAdapter;
 
     @Override
@@ -21,8 +23,23 @@ public class PreferredAppsActivity extends AppCompatActivity {
 
         mStore = new PreferredAppsStore(this);
         mList = findViewById(android.R.id.list);
+        mEmptyListView = findViewById(R.id.empty_list);
         mAdapter = new PreferredAppsAdapter(this, mStore);
+        mAdapter.setOnItemDeleteListener(this);
         mList.setAdapter(mAdapter);
         mList.setLayoutManager(new LinearLayoutManager(this));
+
+        onItemDeleted();
+    }
+
+    @Override
+    public void onItemDeleted() {
+        if (mAdapter.getItemCount() > 0) {
+            mList.setVisibility(View.VISIBLE);
+            mEmptyListView.setVisibility(View.GONE);
+        } else {
+            mList.setVisibility(View.GONE);
+            mEmptyListView.setVisibility(View.VISIBLE);
+        }
     }
 }

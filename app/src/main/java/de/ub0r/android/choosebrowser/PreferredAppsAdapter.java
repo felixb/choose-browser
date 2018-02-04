@@ -21,6 +21,10 @@ public class PreferredAppsAdapter extends RecyclerView.Adapter<PreferredAppsAdap
 
     private static final String TAG = "PreferredAppsAdapter";
 
+    interface DeleteItemListener {
+        void onItemDeleted();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         final TextView keyView;
@@ -85,6 +89,7 @@ public class PreferredAppsAdapter extends RecyclerView.Adapter<PreferredAppsAdap
     private final PackageManager mPackageManager;
     private PreferredAppsStore mStore;
     private final List<ContentHolder> mItems;
+    private DeleteItemListener mListener;
 
     PreferredAppsAdapter(final Context context, final PreferredAppsStore store) {
         mInflater = LayoutInflater.from(context);
@@ -124,10 +129,17 @@ public class PreferredAppsAdapter extends RecyclerView.Adapter<PreferredAppsAdap
         return mItems.size();
     }
 
+    void setOnItemDeleteListener(final DeleteItemListener listener) {
+        mListener = listener;
+    }
+
     private void deleteItem(final int position) {
         final ContentHolder content = mItems.get(position);
         mStore.remove(content.getKey());
         mItems.remove(position);
         notifyItemRemoved(position);
+        if (mListener != null) {
+            mListener.onItemDeleted();
+        }
     }
 }
