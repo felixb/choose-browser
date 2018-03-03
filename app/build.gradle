@@ -14,7 +14,7 @@ android {
         applicationId "de.ub0r.android.choosebrowser"
         minSdkVersion 23
         targetSdkVersion 26
-        versionCode 190000100
+        versionCode 230000001
         versionName "1.0-snapshot"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
