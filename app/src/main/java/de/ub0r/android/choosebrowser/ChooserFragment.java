@@ -43,8 +43,6 @@ public class ChooserFragment extends AppCompatDialogFragment {
     private static final String EXTRA_SHOW_AS_DIALOG = "showAsDialog";
 
     private CheckedTextView mRememberPreference;
-    private RecyclerView mList;
-    private ChooserAdapter mAdapter;
 
     static ChooserFragment newInstance(@NonNull final Uri uri, final boolean showAsDialog) {
         ChooserFragment f = new ChooserFragment();
@@ -170,16 +168,16 @@ public class ChooserFragment extends AppCompatDialogFragment {
             }
         });
 
-        mList = container.findViewById(android.R.id.list);
-        mAdapter = new ChooserAdapter(getContext(), new ChooserAdapter.OnItemClickListener() {
+        final RecyclerView list = container.findViewById(android.R.id.list);
+        final ChooserAdapter adapter = new ChooserAdapter(getContext(), new ChooserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final ComponentName component) {
                 optionallyStorePreferredApp(uri, component);
                 startActivity(uri, component);
             }
         }, infos);
-        mList.setAdapter(mAdapter);
-        mList.setLayoutManager(new LinearLayoutManager(getContext()));
+        list.setAdapter(adapter);
+        list.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void startActivity(@NonNull final Uri uri, @NonNull final ComponentName component) {
