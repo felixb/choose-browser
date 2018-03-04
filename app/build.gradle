@@ -17,6 +17,7 @@ android {
         versionCode 230000001
         versionName "1.0-snapshot"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'ADMOB_APP_ID', '"ca-app-pub-1948477123608376~6115014031"'
     }
     signingConfigs {
         release {
@@ -51,6 +52,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.google.android.gms:play-services-ads:11.8.0'
 
     testImplementation 'junit:junit:4.12'
 
