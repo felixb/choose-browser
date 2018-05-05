@@ -27,11 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-
 import java.util.List;
 
 import de.ub0r.android.logg0r.Log;
@@ -66,27 +61,12 @@ public class ChooserFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final @Nullable ViewGroup container, final @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_chooser, container, false);
-        MobileAds.initialize(getContext(), BuildConfig.ADMOB_APP_ID);
-        return view;
+        return inflater.inflate(R.layout.fragment_chooser, container, false);
     }
 
     @Override
     public void onViewCreated(final View container, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(container, savedInstanceState);
-        final AdView adView = container.findViewById(R.id.adView);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                Log.d(TAG, "onAdLoaded");
-                adView.setVisibility(View.VISIBLE);
-            }
-        });
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice("8D5661972849C1EA622C9CF24D161902")
-                .build();
-        adView.loadAd(adRequest);
         showChooser(container);
     }
 
