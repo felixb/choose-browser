@@ -53,4 +53,11 @@
         <activity android:name=".PreferredAppsActivity" />
     </application>
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+    </queries>
+
 </manifest>
