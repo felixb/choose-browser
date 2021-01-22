@@ -19,22 +19,20 @@ class IntentParser {
         final Uri data = intent.getData();
         Log.d(TAG, "parsing intent with action %s, data %s", intent.getAction(), data);
 
-        if (data != null && data.getScheme().startsWith("http")) {
-            return data;
-        }
+        Uri parsed = null;
 
-        if (intent.hasExtra(Intent.EXTRA_TEXT)) {
+        if (data != null && data.getScheme() != null && data.getScheme().startsWith("http")) {
+            parsed = data;
+        } else if (intent.hasExtra(Intent.EXTRA_TEXT)) {
             final String url = parseText(intent.getStringExtra(Intent.EXTRA_TEXT));
             if (url != null) {
-                return Uri.parse(url);
+                parsed = Uri.parse(url);
             }
+        } else if (intent.getClipData() != null) {
+            parsed = parseClipData(intent.getClipData());
         }
 
-        if (intent.getClipData() != null) {
-            return parseClipData(intent.getClipData());
-        }
-
-        return null;
+        return removeRedirect(parsed);
     }
 
     private Uri parseClipData(@NonNull final ClipData clipData) {
@@ -48,7 +46,7 @@ class IntentParser {
         }
 
         if (item.getUri() != null) {
-            if (item.getUri().getScheme().startsWith("http")) {
+            if (item.getUri().getScheme() != null && item.getUri().getScheme().startsWith("http")) {
                 return item.getUri();
             }
         }
@@ -70,5 +68,19 @@ class IntentParser {
             return Uri.parse(url);
         }
         return null;
+    }
+
+    Uri removeRedirect(final Uri uri) {
+        if (uri != null
+                && uri.getHost() != null
+                && uri.getHost().endsWith("google.com")
+                && uri.getEncodedPath() != null
+                && uri.getEncodedPath().equals("/url")
+                && uri.getQueryParameter("q") != null) {
+            Uri redirect = Uri.parse(uri.getQueryParameter("q"));
+            Log.d(TAG, "Extracting %s from %s with %s", redirect, uri);
+            return redirect;
+        }
+        return uri;
     }
 }
