@@ -3,8 +3,8 @@ package de.ub0r.android.choosebrowser;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Rule;
