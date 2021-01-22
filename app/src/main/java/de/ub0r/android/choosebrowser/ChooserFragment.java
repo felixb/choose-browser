@@ -134,9 +134,7 @@ public class ChooserFragment extends AppCompatDialogFragment {
         setTitle(R.string.app_name);
         setSubtitle(uri.toString());
 
-        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        final PackageManager pm = getContext().getPackageManager();
-        final List<ResolveInfo> infos = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL);
+        final List<ResolveInfo> browsers = listBrowsers(uri);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         mRememberPreference = container.findViewById(R.id.remember_preference);
@@ -155,9 +153,15 @@ public class ChooserFragment extends AppCompatDialogFragment {
                 optionallyStorePreferredApp(uri, component);
                 startActivity(uri, component);
             }
-        }, infos);
+        }, browsers);
         list.setAdapter(adapter);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    private List<ResolveInfo> listBrowsers(Uri uri) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        final PackageManager pm = getContext().getPackageManager();
+        return pm.queryIntentActivities(intent, PackageManager.MATCH_ALL);
     }
 
     private void startActivity(@NonNull final Uri uri, @NonNull final ComponentName component) {

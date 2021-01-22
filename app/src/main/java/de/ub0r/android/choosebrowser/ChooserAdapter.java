@@ -37,30 +37,30 @@ public class ChooserAdapter extends RecyclerView.Adapter<ChooserAdapter.ViewHold
     }
 
     static class ContentHolder {
-        private final ResolveInfo mResolveInfo;
+        private final ResolveInfo mBrowser;
         private CharSequence mLabel;
         private Drawable mIcon;
 
-        ContentHolder(final ResolveInfo resolveInfo) {
-            mResolveInfo = resolveInfo;
+        ContentHolder(final ResolveInfo browser) {
+            mBrowser = browser;
         }
 
         CharSequence getLabel(final PackageManager pm) {
             if (mLabel == null) {
-                mLabel = mResolveInfo.loadLabel(pm);
+                mLabel = mBrowser.loadLabel(pm);
             }
             return mLabel;
         }
 
         Drawable getIcon(final PackageManager pm) {
             if (mIcon == null) {
-                mIcon = mResolveInfo.loadIcon(pm);
+                mIcon = mBrowser.loadIcon(pm);
             }
             return mIcon;
         }
 
         ComponentName getComponent() {
-            return new ComponentName(mResolveInfo.activityInfo.packageName, mResolveInfo.activityInfo.name);
+            return new ComponentName(mBrowser.activityInfo.packageName, mBrowser.activityInfo.name);
         }
     }
 
@@ -69,15 +69,15 @@ public class ChooserAdapter extends RecyclerView.Adapter<ChooserAdapter.ViewHold
     private final OnItemClickListener mListener;
     private final List<ContentHolder> mItems;
 
-    ChooserAdapter(final Context context, final OnItemClickListener listener, final List<ResolveInfo> items) {
+    ChooserAdapter(final Context context, final OnItemClickListener listener, final List<ResolveInfo> browsers) {
         mInflater = LayoutInflater.from(context);
         mPackageManager = context.getPackageManager();
         mListener = listener;
         mItems = new ArrayList<>();
         final String myPackageName = context.getPackageName();
-        for (ResolveInfo resolveInfo : items) {
-            if (!myPackageName.equals(resolveInfo.activityInfo.packageName)) {
-                mItems.add(new ContentHolder(resolveInfo));
+        for (ResolveInfo browser : browsers) {
+            if (!myPackageName.equals(browser.activityInfo.packageName)) {
+                mItems.add(new ContentHolder(browser));
             }
         }
     }
