@@ -89,16 +89,16 @@ class IntentParser {
         return null;
     }
 
-    Uri resolveRedirect(@Nullable Uri uri) {
+    Uri resolveRedirect(@Nullable final Uri uri) {
         Uri redirect = uri;
 
         try {
-            if (validUrl(uri) && uri.getHost().endsWith("google.com") && uri.getEncodedPath().equals("/url") && uri.getQueryParameter("q") != null) {
+            if (validUri(uri) && uri.getHost().endsWith("google.com") && uri.getEncodedPath().equals("/url") && uri.getQueryParameter("q") != null) {
                 redirect = Uri.parse(uri.getQueryParameter("q"));
                 Log.d(TAG, "Extracting %s from %s", redirect, uri);
             }
 
-            if (validUrl(redirect) && shorteners.contains(redirect.getHost())) {
+            if (validUri(redirect) && shorteners.contains(redirect.getHost())) {
                 final Request request =
                         new Request.Builder().url(uri.toString().replace("http:", "https:")).head().build();
                 String location = doHttp(request).header("location");
@@ -113,7 +113,7 @@ class IntentParser {
         return redirect;
     }
 
-    boolean validUrl(@Nullable Uri uri) {
+    boolean validUri(@Nullable final Uri uri) {
         return uri != null && uri.getHost() != null && uri.getEncodedPath() != null && uri.getEncodedPath().length() > 1;
     }
 
