@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -21,20 +20,19 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static java.util.Arrays.asList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 class IntentParser {
     private final static String TAG = "IntentParser";
-    private final static String PATTERN = "https?://[^\\s]*";
     private static final OkHttpClient httpClient =
             new OkHttpClient.Builder().callTimeout(3, SECONDS).followRedirects(false).build();
     private static final ExecutorService executor = newFixedThreadPool(3);
-    private static final List<String> shorteners = Arrays.asList(
+    private static final List<String> shorteners = asList(
             "bit.ly", "tinyurl.com", "t.co", "goo.gl", "ow.ly", "tiny.cc", "bit.do", "cut.ly"
     );
-
-    private final Pattern mPattern = Pattern.compile(PATTERN);
+    private static final Pattern mPattern = Pattern.compile("https?://[^\\s]*");
 
     Uri parseIntent(@NonNull final Intent intent) {
         final Uri data = intent.getData();
@@ -53,7 +51,7 @@ class IntentParser {
             parsed = parseClipData(intent.getClipData());
         }
 
-        return removeRedirect(parsed);
+        return resolveRedirect(parsed);
     }
 
     private Uri parseClipData(@NonNull final ClipData clipData) {
@@ -91,36 +89,32 @@ class IntentParser {
         return null;
     }
 
-    Uri removeRedirect(@Nullable Uri uri) {
-        if (uri == null || uri.getHost() == null || uri.getEncodedPath() == null) {
-            return uri;
-        }
-        String host = uri.getHost();
-        String path = uri.getEncodedPath();
+    Uri resolveRedirect(@Nullable Uri uri) {
+        Uri redirect = uri;
 
-        if (host.endsWith("google.com") && path.equals("/url") && uri.getQueryParameter("q") != null) {
-            uri = parseUri(uri.getQueryParameter("q"));
+        if (validUrl(uri) && uri.getHost().endsWith("google.com") && uri.getEncodedPath().equals("/url") && uri.getQueryParameter("q") != null) {
+            redirect = Uri.parse(uri.getQueryParameter("q"));
+            Log.d(TAG, "Extracting %s from %s", redirect, uri);
         }
 
-        if (shorteners.contains(host) && path.length() > 1) {
+        if (validUrl(redirect) && shorteners.contains(redirect.getHost())) {
             try {
                 final Request request =
                         new Request.Builder().url(uri.toString().replace("http:", "https:")).head().build();
                 String location = doHttp(request).header("location");
                 if (location != null) {
-                    uri = parseUri(location);
+                    redirect = Uri.parse(location);
+                    Log.d(TAG, "Extracting %s from %s", redirect, uri);
                 }
             } catch (Exception e) {
                 Log.i(TAG, "Could not fetch " + uri, e);
             }
         }
-        return uri;
+        return redirect;
     }
 
-    Uri parseUri(@NonNull final String uri) {
-        Uri redirect = Uri.parse(uri);
-        Log.d(TAG, "Extracting %s from %s with %s", redirect, uri);
-        return redirect;
+    boolean validUrl(@Nullable Uri uri) {
+        return uri != null && uri.getHost() != null && uri.getEncodedPath() != null && uri.getEncodedPath().length() > 1;
     }
 
     Response doHttp(@NonNull final Request request) throws ExecutionException, InterruptedException {
