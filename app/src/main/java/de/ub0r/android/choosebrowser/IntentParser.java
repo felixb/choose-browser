@@ -96,7 +96,7 @@ class IntentParser {
             uri = parseUri(uri.getQueryParameter("q"));
         }
 
-        if (uri.getHost().endsWith("bit.ly")
+        if ((uri.getHost().endsWith("bit.ly") || uri.getHost().endsWith("tinyurl.com"))
                 && uri.getEncodedPath().length() > 0
                 && !uri.getEncodedPath().substring(1).contains("/")) {
             try {
