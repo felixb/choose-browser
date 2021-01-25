@@ -42,6 +42,6 @@ public class IntentParserTest {
     @Test
     public void extractGoogleRedirectUrl() throws Exception {
         assertEquals(Uri.parse("https://foo.bar/j/123?pwd=usr"),
-                new IntentParser().removeRedirect(Uri.parse("https://www.google.com/url?q=https://foo.bar/j/123?pwd%3Dusr&sa=D")));
+                new IntentParser().resolveRedirect(Uri.parse("https://www.google.com/url?q=https://foo.bar/j/123?pwd%3Dusr&sa=D")));
     }
 }
