@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -27,10 +30,13 @@ class IntentParser {
     private static final OkHttpClient httpClient =
             new OkHttpClient.Builder().callTimeout(3, SECONDS).followRedirects(false).build();
     private static final ExecutorService executor = newFixedThreadPool(3);
+    private static final List<String> shorteners = Arrays.asList(
+            "bit.ly", "tinyurl.com", "t.co", "goo.gl", "ow.ly", "tiny.cc", "bit.do", "cut.ly"
+    );
 
     private final Pattern mPattern = Pattern.compile(PATTERN);
 
-    Uri parseIntent(final Intent intent) {
+    Uri parseIntent(@NonNull final Intent intent) {
         final Uri data = intent.getData();
         Log.d(TAG, "parsing intent with action %s, data %s", intent.getAction(), data);
 
@@ -69,7 +75,7 @@ class IntentParser {
         return null;
     }
 
-    String parseText(final CharSequence text) {
+    String parseText(@Nullable final CharSequence text) {
         final Matcher matcher = mPattern.matcher(text);
         if (matcher.find()) {
             return text.subSequence(matcher.start(), matcher.end()).toString();
@@ -78,27 +84,25 @@ class IntentParser {
         }
     }
 
-    private Uri uriOrNull(final String url) {
+    private Uri uriOrNull(@Nullable final String url) {
         if (url != null) {
             return Uri.parse(url);
         }
         return null;
     }
 
-    Uri removeRedirect(Uri uri) {
+    Uri removeRedirect(@Nullable Uri uri) {
         if (uri == null || uri.getHost() == null || uri.getEncodedPath() == null) {
             return uri;
         }
+        String host = uri.getHost();
+        String path = uri.getEncodedPath();
 
-        if (uri.getHost().endsWith("google.com")
-                && uri.getEncodedPath().equals("/url")
-                && uri.getQueryParameter("q") != null) {
+        if (host.endsWith("google.com") && path.equals("/url") && uri.getQueryParameter("q") != null) {
             uri = parseUri(uri.getQueryParameter("q"));
         }
 
-        if ((uri.getHost().endsWith("bit.ly") || uri.getHost().endsWith("tinyurl.com"))
-                && uri.getEncodedPath().length() > 0
-                && !uri.getEncodedPath().substring(1).contains("/")) {
+        if (shorteners.contains(host) && path.length() > 1) {
             try {
                 final Request request =
                         new Request.Builder().url(uri.toString().replace("http:", "https:")).head().build();
@@ -113,13 +117,13 @@ class IntentParser {
         return uri;
     }
 
-    Uri parseUri(final String uri) {
+    Uri parseUri(@NonNull final String uri) {
         Uri redirect = Uri.parse(uri);
         Log.d(TAG, "Extracting %s from %s with %s", redirect, uri);
         return redirect;
     }
 
-    Response doHttp(final Request request) throws ExecutionException, InterruptedException {
+    Response doHttp(@NonNull final Request request) throws ExecutionException, InterruptedException {
         return executor.submit(new Callable<Response>() {
             public Response call() throws IOException {
                 return httpClient.newCall(request).execute();
