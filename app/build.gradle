@@ -14,8 +14,8 @@ android {
         applicationId "de.ub0r.android.choosebrowser"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 230011000
-        versionName "1.1"
+        versionCode 230012000
+        versionName "1.2"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     signingConfigs {
