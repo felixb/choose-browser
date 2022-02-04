@@ -7,6 +7,7 @@ repositories {
 apply plugin: 'com.android.application'
 
 File releaseProps = new File("release.properties")
+String gitSha = 'git rev-parse --verify --short HEAD'.execute().text.trim()
 
 android {
     compileSdkVersion 31
@@ -17,6 +18,7 @@ android {
         versionCode 230012000
         versionName "1.2"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        setProperty("archivesBaseName", "choose-browser-$gitSha")
     }
     signingConfigs {
         release {
