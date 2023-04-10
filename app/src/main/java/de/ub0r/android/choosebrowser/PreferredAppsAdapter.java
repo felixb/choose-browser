@@ -97,6 +97,7 @@ public class PreferredAppsAdapter extends RecyclerView.Adapter<PreferredAppsAdap
         mStore = store;
         mItems = new ArrayList<>();
         final ArrayList<String> keys = new ArrayList<>(mStore.list());
+        while (keys.remove(null));
         Collections.sort(keys);
         for (final String key : keys) {
             mItems.add(new ContentHolder(key, mStore.get(key)));
